@@ -6,8 +6,8 @@ for a in range(0,101):
         if 5*a+3*b+(100-a-b)/3==100:
             print(f'a={a}, b={b}, c={100-a-b}')
 ```
-我一开始想用while，没搞定，让deepseek研究研究
-错误案例：
+我一开始想用while，没搞定，让deepseek研究研究。
+**错误案例**：
 ```python
 while 5*a+3*b+(100-a-b)/3!=100:
     for a in range(0,101):
