@@ -7,6 +7,7 @@ for a in range(0,101):
             print(f'a={a}, b={b}, c={100-a-b}')
 ```
 我一开始想用while，没搞定，让deepseek研究研究。
+
 **错误案例**：
 ```python
 while 5*a+3*b+(100-a-b)/3!=100:
@@ -16,6 +17,7 @@ while 5*a+3*b+(100-a-b)/3!=100:
 print(f'a={a}, b={b}, c={100-a-b}')
 ```
 菜菜的很安心。DS说while语句使用了未初始化的a，b，然后就算定义了也不能用。正确写法如下。
+
 双while循环
 ```python
 a = 0
