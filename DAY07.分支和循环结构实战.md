@@ -42,3 +42,105 @@ while a <= 20:
             break  # 跳出for循环
     a += 1
 ```
+### CRAPS赌博游戏
+
+> **说明**：CRAPS又称花旗骰，是美国拉斯维加斯非常受欢迎的一种的桌上赌博游戏。该游戏使用两粒骰子，玩家通过摇两粒骰子获得点数进行游戏。简化后的规则是：玩家第一次摇骰子如果摇出了 7 点或 11 点，玩家胜；玩家第一次如果摇出 2 点、3 点或 12 点，庄家胜；玩家如果摇出其他点数则游戏继续，玩家重新摇骰子，如果玩家摇出了 7 点，庄家胜；如果玩家摇出了第一次摇的点数，玩家胜；其他点数玩家继续摇骰子，直到分出胜负。为了增加代码的趣味性，我们设定游戏开始时玩家有 1000 元的赌注，每局游戏开始之前，玩家先下注，如果玩家获胜就可以获得对应下注金额的奖励，如果庄家获胜，玩家就会输掉自己下注的金额。游戏结束的条件是玩家破产（输光所有的赌注）。
+
+我自己写的，感觉层层叠叠。而且理解错游戏规则了，不管了。
+```python
+import random
+sum=1000
+player=False
+dealer=False
+t=0
+continue_game=True
+currentbet=0
+while continue_game and sum>0:
+    player=False
+    dealer=False
+    currentbet=int(input('Please place your bet:'))
+    if sum-currentbet>=0:
+        #round_1
+        dice1=random.randint(1,6)
+        dice2=random.randint(1,6)
+        dice_r1=dice1+dice2
+        print(f'第1轮掷骰点数为{dice_r1}')
+        if dice_r1 in [2,3,7,11,12]:
+            if dice_r1 in [7,11]:
+                player=True
+            elif dice_r1 in [2,3,12]:
+                dealer=True
+        else:
+            dice_re=0
+            i=2
+            #round_re
+            while player==False and dealer==False:
+                dice1=random.randint(1,6)
+                dice2=random.randint(1,6)
+                dice_re=dice1+dice2
+                print(f'第{i}轮掷骰点数为{dice_re}')
+                if dice_re==7:dealer=True
+                elif dice_re==dice_r1:player=True
+                else: 
+                    dice_r1=dice_re
+                    dice_re=0
+                    i=i+1
+        if player==True or dealer==True:
+            if player==True:
+                bet=currentbet
+                print('玩家胜')
+            if dealer==True:
+                bet=(-1)*currentbet
+                print('庄家胜')
+            sum=sum+bet
+            t=t+1
+            print(f'你已游戏{t}轮，你剩余筹码为：{sum}元')
+            while sum>0:
+                choice=input('是否继续？（Y/N）：').upper()
+                if choice=='Y':
+                    print('游戏继续')
+                    break
+                elif choice=='N':
+                    print('游戏结束')
+                    continue_game=False
+                    break
+                else:print('请输入Y/N')
+    else:print(f'余额不足，当前余额{sum}元')
+if sum==0:print('余额为0，游戏结束')
+```
+把标准答案放这里
+```python
+import random
+
+money = 1000
+while money > 0:
+    print(f'你的总资产为: {money}元')
+    # 下注金额必须大于0且小于等于玩家的总资产
+    while True:
+        debt = int(input('请下注: '))
+        if 0 < debt <= money:
+            break
+    # 用两个1到6均匀分布的随机数相加模拟摇两颗色子得到的点数
+    first_point = random.randrange(1, 7) + random.randrange(1, 7)
+    print(f'\n玩家摇出了{first_point}点')
+    if first_point == 7 or first_point == 11:
+        print('玩家胜!\n')
+        money += debt
+    elif first_point == 2 or first_point == 3 or first_point == 12:
+        print('庄家胜!\n')
+        money -= debt
+    else:
+        # 如果第一次摇色子没有分出胜负，玩家需要重新摇色子
+        while True:
+            current_point = random.randrange(1, 7) + random.randrange(1, 7)
+            print(f'玩家摇出了{current_point}点')
+            if current_point == 7:
+                print('庄家胜!\n')
+                money -= debt
+                break
+            elif current_point == first_point:
+                print('玩家胜!\n')
+                money += debt
+                break
+print('你破产了, 游戏结束!')
+```
